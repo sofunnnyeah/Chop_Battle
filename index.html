@@ -10,13 +10,7 @@
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
-html, body {
-  width: 100%; height: 100%; height: 100dvh; overflow: hidden;
-  font-family: 'Segoe UI', -apple-system, 'Arial', sans-serif;
-  background: #0a0f0a; color: #e0ffe0;
-  user-select: none; -webkit-user-select: none;
-  touch-action: none; position: fixed; overscroll-behavior: none;
-}
+html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; font-family: 'Segoe UI', -apple-system, 'Arial', sans-serif; background: #0a0f0a; color: #e0ffe0; user-select: none; -webkit-user-select: none; touch-action: none; position: fixed; overscroll-behavior: none; }
 #game-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
 #bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .bg-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #1a2a1a 0%, #0a0f0a 75%); z-index: 0; }
@@ -164,7 +158,7 @@ html, body {
 #timer { position: absolute; top: max(8px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); background: rgba(10, 20, 10, 0.9); border: 2px solid rgba(255, 200, 0, 0.6); border-radius: 14px; padding: clamp(5px, 1vh, 9px) clamp(14px, 3.5vw, 22px); z-index: 16; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: clamp(13px, 3.5vw, 17px); font-weight: 900; letter-spacing: 2px; white-space: nowrap; font-variant-numeric: tabular-nums; color: #ffc800; text-shadow: 0 0 10px rgba(255, 200, 0, 0.6); transition: border-color 0.3s, color 0.3s; }
 #timer.warning { border-color: #ff4444; color: #ff4444; text-shadow: 0 0 15px rgba(255, 68, 68, 0.8); animation: timerPulse 0.8s ease-in-out infinite; }
 @keyframes timerPulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } }
-#scoreboard-multi { position: absolute; top: max(55px, calc(env(safe-area-inset-top) + 50px)); left: 50%; transform: translateX(-50%); background: rgba(10, 20, 10, 0.9); border: 2px solid rgba(127, 255, 0, 0.4); border-radius: 14px; padding: clamp(4px, 0.8vh, 7px) clamp(10px, 2.5vw, 16px); z-index: 16; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 3px; font-size: clamp(9px, 2.6vw, 12px); font-weight: 700; letter-spacing: 1px; max-width: 95vw; transition: border-color 0.3s, box-shadow 0.3s; }
+#scoreboard-multi { position: absolute; top: max(55px, calc(env(safe-area-inset-top) + 50px)); left: 50%; transform: translateX(-50%); background: rgba(10, 20, 10, 0.9); border: 2px solid rgba(127, 255, 0, 0.4); border-radius: 14px; padding: clamp(4px, 0.8vh, 7px) clamp(10px, 2.5vw, 16px); z-index: 16; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 3px; font-size: clamp(9px, 2.6vw, 12px); font-weight: 700; letter-spacing: 1px; max-width: 95vw; }
 .score-row { display: flex; justify-content: center; gap: clamp(6px, 2vw, 14px); flex-wrap: wrap; }
 .score-player { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
 .score-player .dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 6px currentColor; background: currentColor; flex-shrink: 0; }
@@ -317,7 +311,6 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
   <div class="bg-gradient"></div>
   <canvas id="bg-canvas"></canvas>
 
-  <!-- ===== ПОПАП ВВОДА НИКА ===== -->
   <div id="nickname-overlay">
     <div id="nickname-box">
       <div id="nickname-title">👋 ЛАСКАВО ПРОСИТИ!</div>
@@ -558,23 +551,6 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
         </div>
       </div>
 
-      <div class="settings-section" data-section="nickname">
-        <div class="settings-section-header">
-          <span>👤</span><span id="sec-nick-title">Нікнейм</span>
-          <span class="arrow">▼</span>
-        </div>
-        <div class="settings-section-body">
-          <div class="setting-row">
-            <label id="lbl-nick">Твій нік</label>
-            <input type="text" id="nick-change-input" maxlength="15" style="background:#2a3a2a;color:#e0ffe0;border:1px solid #7fff00;border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;width:140px;text-align:center;outline:none;">
-          </div>
-          <div class="setting-row">
-            <label style="color:#7fff00;" id="lbl-nick-save">Зберегти нік</label>
-            <button class="btn" style="width:auto;padding:8px 18px;margin:0;font-size:12px;" id="nick-save-btn"><span id="nick-save-text">Зберегти</span></button>
-          </div>
-        </div>
-      </div>
-
       <div class="settings-section" data-section="network">
         <div class="settings-section-header">
           <span>📡</span><span id="sec-net-title">Мережа</span>
@@ -757,7 +733,6 @@ const I18N = {
     nickTitle: '👋 ЛАСКАВО ПРОСИТИ!', nickSubtitle: 'Як тебе звати?', nickPlaceholder: 'Твій нік...',
     nickError: '❌ Мінімум 2 символи!', nickSave: '✓ ЗБЕРЕГТИ', nickTooLong: '❌ Максимум 15 символів!',
     nickTaken: '❌ Цей нік вже зайнято!', nickSaved: '✅ Нік збережено!',
-    secNick: 'Нікнейм', lblNick: 'Твій нік', lblNickSave: 'Зберегти нік', nickSaveBtn: 'Зберегти',
     reconnectTitle: "ЗВ'ЯЗОК ВТРАЧЕНО", reconnectText: 'Намагаємось перепідключитись...',
     reconnectBtn: '🔄 СПРОБУВАТИ ЗАРАЗ', reconnectExit: '✕ ВИЙТИ',
     reconnecting: '🔄 Підключення...', reconnectSuccess: '✅ Знову в грі!', reconnectFailed: '❌ Не вдалося',
@@ -834,7 +809,6 @@ const I18N = {
     nickTitle: '👋 ДОБРО ПОЖАЛОВАТЬ!', nickSubtitle: 'Как тебя зовут?', nickPlaceholder: 'Твой ник...',
     nickError: '❌ Минимум 2 символа!', nickSave: '✓ СОХРАНИТЬ', nickTooLong: '❌ Максимум 15 символов!',
     nickTaken: '❌ Этот ник уже занят!', nickSaved: '✅ Ник сохранён!',
-    secNick: 'Никнейм', lblNick: 'Твой ник', lblNickSave: 'Сохранить ник', nickSaveBtn: 'Сохранить',
     reconnectTitle: 'СВЯЗЬ ПОТЕРЯНА', reconnectText: 'Пытаемся переподключиться...',
     reconnectBtn: '🔄 ПОПРОБОВАТЬ СЕЙЧАС', reconnectExit: '✕ ВЫЙТИ',
     reconnecting: '🔄 Подключение...', reconnectSuccess: '✅ Снова в игре!', reconnectFailed: '❌ Не удалось',
@@ -954,8 +928,6 @@ function trySaveNick() {
   errEl.classList.remove('show');
   saveNick(val);
   hideNickPopup();
-  updateNickInputs();
-  if (typeof checkNickUniqueness === 'function') checkNickUniqueness();
 }
 
 document.getElementById('nickname-save').addEventListener('click', trySaveNick);
@@ -965,21 +937,6 @@ document.getElementById('nickname-input').addEventListener('keydown', (e) => {
 document.getElementById('nickname-input').addEventListener('input', function() {
   this.classList.remove('error');
   document.getElementById('nickname-error').classList.remove('show');
-});
-
-function updateNickInputs() {
-  const changeInp = document.getElementById('nick-change-input');
-  if (changeInp) changeInp.value = playerNick;
-}
-
-document.getElementById('nick-save-btn').addEventListener('click', () => {
-  const inp = document.getElementById('nick-change-input');
-  const val = inp.value.trim();
-  if (val.length < 2) { showToast(t('nickError')); return; }
-  if (val.length > 15) { showToast(t('nickTooLong')); return; }
-  saveNick(val);
-  showToast(t('nickSaved'));
-  playSFX('click');
 });
 
 // ============================================================
@@ -1093,7 +1050,7 @@ const TREE_TYPES = [
     spawnChance: 0.5, hp: 250, goldMin: 90, goldMax: 130,
     trunkColor: '#8a6a10', leafColor: '#ffc800', leafColor2: '#ffe040',
     trunkWidth: 0.65, crownSize: 1.7,
-    descUk: 'Найрідкісніше дерево в лісі!', descRu: 'Самое редкое дерево в лесу!' },
+    descUk: 'Найрідкісніше дерево в лісі!', descRu: 'Самое редкое дерево в лесу!' }
 ];
 
 function treeName(type) { return t(type.nameKey); }
@@ -1101,8 +1058,7 @@ function treeRarity(type) { return t(type.rarityKey); }
 function treeDesc(type) { return currentLang === 'ru' ? type.descRu : type.descUk; }
 
 // ============================================================
-// МУЗИКА
-// ============================================================
+// МУЗИКА// ============================================================
 const MUSIC_TRACKS = {
   forest: { name: 'Forest Ambience', descUk: 'Ліс вдень', descRu: 'Лес днём', icon: '🌲', bpm: 80,
     scale: [174.61, 196, 220, 261.63, 293.66], bass: [43.65, 49, 55, 65.41], wave: 'sine', bassWave: 'triangle', drums: false },
@@ -1119,7 +1075,7 @@ const MUSIC_TRACKS = {
   victory: { name: 'Victory', descUk: 'Перемога', descRu: 'Победа', icon: '🏅', bpm: 120,
     scale: [261.63, 329.63, 392, 523.25, 659.25], bass: [65.41, 82.41, 98, 130.81], wave: 'triangle', bassWave: 'triangle', drums: true },
   mystic: { name: 'Mystic', descUk: 'Містика', descRu: 'Мистика', icon: '🔮', bpm: 70,
-    scale: [207.65, 233.08, 277.18, 311.13, 369.99], bass: [51.91, 58.27, 69.3, 77.78], wave: 'sine', bassWave: 'triangle', drums: false },
+    scale: [207.65, 233.08, 277.18, 311.13, 369.99], bass: [51.91, 58.27, 69.3, 77.78], wave: 'sine', bassWave: 'triangle', drums: false }
 };
 let currentTrack = 'chop';
 let musicStep = 0;
@@ -1128,50 +1084,17 @@ let musicStep = 0;
 // МАГАЗИН
 // ============================================================
 const SHOP_ITEMS = [
-  { id: 'axe_wood', icon: '🪓', nameKey: 'axeWood',
-    descUk: 'Базова сокира.', descRu: 'Базовый топор.',
-    stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0 },
-    price: 0, starter: true },
-  { id: 'axe_stone', icon: '🪨', nameKey: 'axeStone',
-    descUk: 'Гостріша за дерев\'яну.', descRu: 'Острее деревянного.',
-    stats: { speed: 1.5, goldBonus: 0, moveSpeed: 1.0 },
-    price: 50, achievement: 'buy_stone' },
-  { id: 'axe_iron', icon: '⛏️', nameKey: 'axeIron',
-    descUk: 'Міцна та швидка. +1 золото.', descRu: 'Крепкий и быстрый. +1 золото.',
-    stats: { speed: 2.0, goldBonus: 1, moveSpeed: 1.0 },
-    price: 200, achievement: 'buy_iron' },
-  { id: 'saw_basic', icon: '🪚', nameKey: 'sawBasic',
-    descUk: 'Ручна пила.', descRu: 'Ручная пила.',
-    stats: { speed: 2.8, goldBonus: 1, moveSpeed: 1.0 },
-    price: 500, achievement: 'buy_saw' },
-  { id: 'axe_gold', icon: '🪙', nameKey: 'axeGold',
-    descUk: 'Золота сокира +2 золота.', descRu: 'Золотой топор +2 золота.',
-    stats: { speed: 3.5, goldBonus: 2, moveSpeed: 1.05 },
-    price: 1200, achievement: 'buy_gold' },
-  { id: 'chainsaw', icon: '⚙️', nameKey: 'chainsaw',
-    descUk: 'Бензопила! +3 золота.', descRu: 'Бензопила! +3 золота.',
-    stats: { speed: 5.0, goldBonus: 3, moveSpeed: 1.1 },
-    price: 3000, achievement: 'buy_chainsaw' },
-  { id: 'saw_laser', icon: '⚡', nameKey: 'sawLaser',
-    descUk: 'Лазерна пила! +5 золота.', descRu: 'Лазерная пила! +5 золота.',
-    stats: { speed: 8.0, goldBonus: 5, moveSpeed: 1.15 },
-    price: 6000, achievement: 'buy_laser' },
-  { id: 'boots', icon: '👟', nameKey: 'boots',
-    descUk: '+25% швидкості пересування.', descRu: '+25% скорости передвижения.',
-    stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.25 },
-    price: 400 },
-  { id: 'magnet', icon: '🧲', nameKey: 'magnet',
-    descUk: '+1 золота з кожного дерева.', descRu: '+1 золота с каждого дерева.',
-    stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, magnet: true },
-    price: 800 },
-  { id: 'helmet', icon: '🛡️', nameKey: 'helmet',
-    descUk: '1 дебафф за раунд ігнорується.', descRu: '1 дебафф за раунд игнорируется.',
-    stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, debuffShield: 1 },
-    price: 1500 },
-  { id: 'backpack', icon: '🎒', nameKey: 'backpack',
-    descUk: '+2 слоти в інвентарі дебафів.', descRu: '+2 слота в инвентаре дебаффов.',
-    stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, extraSlots: 2 },
-    price: 2000 }
+  { id: 'axe_wood', icon: '🪓', nameKey: 'axeWood', descUk: 'Базова сокира.', descRu: 'Базовый топор.', stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0 }, price: 0, starter: true },
+  { id: 'axe_stone', icon: '🪨', nameKey: 'axeStone', descUk: 'Гостріша за дерев\'яну.', descRu: 'Острее деревянного.', stats: { speed: 1.5, goldBonus: 0, moveSpeed: 1.0 }, price: 50, achievement: 'buy_stone' },
+  { id: 'axe_iron', icon: '⛏️', nameKey: 'axeIron', descUk: 'Міцна та швидка. +1 золото.', descRu: 'Крепкий и быстрый. +1 золото.', stats: { speed: 2.0, goldBonus: 1, moveSpeed: 1.0 }, price: 200, achievement: 'buy_iron' },
+  { id: 'saw_basic', icon: '🪚', nameKey: 'sawBasic', descUk: 'Ручна пила.', descRu: 'Ручная пила.', stats: { speed: 2.8, goldBonus: 1, moveSpeed: 1.0 }, price: 500, achievement: 'buy_saw' },
+  { id: 'axe_gold', icon: '🪙', nameKey: 'axeGold', descUk: 'Золота сокира +2 золота.', descRu: 'Золотой топор +2 золота.', stats: { speed: 3.5, goldBonus: 2, moveSpeed: 1.05 }, price: 1200, achievement: 'buy_gold' },
+  { id: 'chainsaw', icon: '⚙️', nameKey: 'chainsaw', descUk: 'Бензопила! +3 золота.', descRu: 'Бензопила! +3 золота.', stats: { speed: 5.0, goldBonus: 3, moveSpeed: 1.1 }, price: 3000, achievement: 'buy_chainsaw' },
+  { id: 'saw_laser', icon: '⚡', nameKey: 'sawLaser', descUk: 'Лазерна пила! +5 золота.', descRu: 'Лазерная пила! +5 золота.', stats: { speed: 8.0, goldBonus: 5, moveSpeed: 1.15 }, price: 6000, achievement: 'buy_laser' },
+  { id: 'boots', icon: '👟', nameKey: 'boots', descUk: '+25% швидкості пересування.', descRu: '+25% скорости передвижения.', stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.25 }, price: 400 },
+  { id: 'magnet', icon: '🧲', nameKey: 'magnet', descUk: '+1 золота з кожного дерева.', descRu: '+1 золота с каждого дерева.', stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, magnet: true }, price: 800 },
+  { id: 'helmet', icon: '🛡️', nameKey: 'helmet', descUk: '1 дебафф за раунд ігнорується.', descRu: '1 дебафф за раунд игнорируется.', stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, debuffShield: 1 }, price: 1500 },
+  { id: 'backpack', icon: '🎒', nameKey: 'backpack', descUk: '+2 слоти в інвентарі дебафів.', descRu: '+2 слота в инвентаре дебаффов.', stats: { speed: 1.0, goldBonus: 0, moveSpeed: 1.0, extraSlots: 2 }, price: 2000 }
 ];
 
 function itemName(item) { return t(item.nameKey); }
@@ -1203,7 +1126,7 @@ function debuffName(d) { return t(d.nameKey); }
 function debuffDesc(d) { return t(d.descKey); }
 
 // ============================================================
-// ПРОФИЛЬ — скины сбрасываются каждый раунд
+// ПРОФИЛЬ
 // ============================================================
 const PROFILE_KEY = 'chopbattle_profile';
 
@@ -1274,6 +1197,9 @@ function isTrollUnlocked() {
   const baseAch = ACHIEVEMENTS.filter(a => !a.id.startsWith('troll_'));
   return baseAch.every(a => hasAchievement(a.id));
 }
+
+// Заглушка — раздел в настройках удалён, но функция используется
+function updateNickInputs() {}
 
 loadSessionId();
 
@@ -1476,7 +1402,7 @@ function drawBg() {
 }
 
 // ============================================================
-// PEERJS — 5 ІГРОКІВ (зірка через хоста)
+// PEERJS — 5 ІГРОКІВ
 // ============================================================
 const PEER_CONFIG = {
   debug: 0,
@@ -1492,11 +1418,11 @@ const MAX_PLAYERS = 5;
 const PLAYER_COLORS = ['#7fff00', '#ffd700', '#00bfff', '#ff69b4', '#ff8800'];
 
 let peer = null;
-let conns = [];            // [{ conn, peerId, slot, name, sessionId, ready, disconnected }]
+let conns = [];
 let isHost = false;
 let roomCode = '';
-let mySlot = -1;           // 0 = хост, 1-4 = гості
-let lobbyPlayersData = {}; // slot -> { name, color, ready, isHost, disconnected, sessionId }
+let mySlot = -1;
+let lobbyPlayersData = {};
 let lastPingSent = 0, currentPing = 0;
 let reconnectAttempts = 0;
 let reconnectTimer = null;
@@ -1528,7 +1454,7 @@ function showPurchaseToast(icon, name) {
 
 function broadcastToAll(data, exceptPeerId) {
   conns.forEach(c => {
-    if (c.conn && c.conn.open && c.peerId !== exceptPeerId) {
+    if (c.conn && c.conn.open && c.peerId !== exceptPeerId && c.slot !== 0) {
       try { c.conn.send(data); } catch(e) {}
     }
   });
@@ -1553,9 +1479,6 @@ function getFreeHostSlot() {
   return -1;
 }
 
-// ============================================================
-// ХОСТ: СТВОРЕННЯ КІМНАТИ
-// ============================================================
 function createRoom() {
   const code = genRoomCode();
   roomCode = code;
@@ -1564,15 +1487,12 @@ function createRoom() {
   intentionalLeave = false;
   setCoopView('host');
   document.getElementById('room-code').textContent = code;
-
   lobbyPlayersData = {};
   lobbyPlayersData[0] = {
     name: playerNick, color: PLAYER_COLORS[0], ready: true, isHost: true, disconnected: false, sessionId: playerSessionId
   };
   renderPlayersList('host-players');
-
   try { peer = new Peer('chop5-' + code, PEER_CONFIG); } catch(e) { showToast('❌'); return; }
-
   peer.on('open', () => showToast(t('roomCreated')));
   peer.on('connection', handleIncomingConnection);
   peer.on('error', (err) => {
@@ -1585,9 +1505,7 @@ function createRoom() {
 }
 
 function handleIncomingConnection(connection) {
-  connection.on('open', () => {
-    // гость откроет соединение, потом пришлёт join/join-reconnect с инфой
-  });
+  connection.on('open', () => {});
   connection.on('data', (data) => {
     if (data.type === 'join' || data.type === 'join-reconnect') {
       handleJoinRequest(connection, data);
@@ -1597,17 +1515,29 @@ function handleIncomingConnection(connection) {
   });
   connection.on('close', () => {
     const entry = conns.find(c => c.conn === connection);
-    if (entry) {
-      handleGuestDisconnect(entry);
-    }
+    if (entry) handleGuestDisconnect(entry);
   });
   connection.on('error', () => {});
 }
 
 function handleJoinRequest(connection, data) {
   const sessionId = data.sessionId || '';
-  const name = (data.name || 'Guest').substring(0, 15);
-  // Проверяем: не тот ли это игрок, который уже был в лобби (по sessionId)
+  let name = (data.name || 'Guest').substring(0, 15);
+  // Проверка уникальности ника (только для новых игроков)
+  let existingSessionSlots = Object.keys(lobbyPlayersData).map(Number);
+  const isReconnect = existingSessionSlots.some(slot => slot > 0 && lobbyPlayersData[slot].sessionId === sessionId);
+  if (!isReconnect) {
+    let baseName = name;
+    let suffix = 2;
+    let taken = true;
+    while (taken) {
+      taken = false;
+      for (const slotStr in lobbyPlayersData) {
+        if (lobbyPlayersData[slotStr].name === name) { taken = true; break; }
+      }
+      if (taken) { name = baseName + ' ' + suffix; suffix++; }
+    }
+  }
   let existingSlot = -1;
   for (const slotStr in lobbyPlayersData) {
     const slot = parseInt(slotStr);
@@ -1618,11 +1548,9 @@ function handleJoinRequest(connection, data) {
   }
   let slot;
   if (existingSlot > 0) {
-    // Это reconnect — восстанавливаем слот
     slot = existingSlot;
     lobbyPlayersData[slot].disconnected = false;
     lobbyPlayersData[slot].name = name;
-    // удаляем старую conn с этим слотом
     conns = conns.filter(c => {
       if (c.slot === slot && c.conn !== connection) {
         try { c.conn.close(); } catch(e) {}
@@ -1631,7 +1559,6 @@ function handleJoinRequest(connection, data) {
       return true;
     });
   } else {
-    // новое подключение — ищем свободный слот
     slot = getFreeHostSlot();
     if (slot === -1) {
       try { connection.send({ type: 'room-full' }); } catch(e) {}
@@ -1642,20 +1569,18 @@ function handleJoinRequest(connection, data) {
       name, color: PLAYER_COLORS[slot], ready: false, isHost: false, disconnected: false, sessionId
     };
   }
-  // регистрируем conn
   conns.push({ conn: connection, peerId: connection.peer, slot, sessionId });
-  // отправляем гостю подтверждение
   try {
     connection.send({
       type: 'welcome',
       slot,
+      name: lobbyPlayersData[slot].name,
       roomCode,
       durationSec: selectedDurationSec,
       lobby: serializeLobby(),
       gameInProgress: gameRunning
     });
   } catch(e) {}
-  // всем остальным сообщаем об обновлении лобби
   broadcastToAll({ type: 'lobby-update', lobby: serializeLobby() });
   renderPlayersList('host-players');
   if (data.type === 'join-reconnect') {
@@ -1684,7 +1609,6 @@ function handleGuestDisconnect(entry) {
   const slot = entry.slot;
   if (slot === 0 || !lobbyPlayersData[slot]) return;
   lobbyPlayersData[slot].disconnected = true;
-  // НЕ удаляем — ждём до конца раунда
   broadcastToAll({ type: 'player-disconnected', slot, name: lobbyPlayersData[slot].name });
   showToast(`⚠️ ${lobbyPlayersData[slot].name} ${t('playerDisconnected')}`, 2500);
   renderPlayersList('host-players');
@@ -1692,9 +1616,6 @@ function handleGuestDisconnect(entry) {
   checkAllReadyForStart();
 }
 
-// ============================================================
-// ГОСТЬ: ПІДКЛЮЧЕННЯ ДО КІМНАТИ
-// ============================================================
 function joinRoom(code) {
   code = code.toUpperCase().trim();
   if (code.length !== 6) { showToast(t('code6')); return; }
@@ -1703,12 +1624,8 @@ function joinRoom(code) {
   mySlot = -1;
   intentionalLeave = false;
   setCoopView('wait');
-
   try { peer = new Peer(PEER_CONFIG); } catch(e) { showToast('❌'); return; }
-
-  peer.on('open', () => {
-    connectToHost();
-  });
+  peer.on('open', () => connectToHost());
   peer.on('error', (err) => {
     showToast('❌ ' + (err.type || t('error')));
     setCoopView('join');
@@ -1726,15 +1643,12 @@ function connectToHost() {
   }, 8000);
   connection.on('open', () => {
     clearTimeout(timeout);
-    connection.send({
-      type: 'join',
-      name: playerNick,
-      sessionId: playerSessionId
-    });
+    connection.send({ type: 'join', name: playerNick, sessionId: playerSessionId });
   });
   connection.on('data', (data) => {
     if (data.type === 'welcome') {
       mySlot = data.slot;
+      if (data.name) { playerNick = data.name; saveNick(data.name); }
       selectedDurationSec = data.durationSec || selectedDurationSec;
       gameDurationMs = selectedDurationSec * 1000;
       updateDurationButtons();
@@ -1768,12 +1682,7 @@ function connectToHost() {
 }
 
 function handleMyDisconnect() {
-  if (!gameRunning && !countdownActive) {
-    // не в игре — просто выходим
-    leaveRoom();
-    return;
-  }
-  // в игре — показываем оверлей переподключения
+  if (!gameRunning && !countdownActive) { leaveRoom(); return; }
   document.getElementById('connection-lost-overlay').classList.add('active');
 }
 
@@ -1781,9 +1690,7 @@ function attemptReconnect() {
   if (isHost) return;
   document.getElementById('connection-lost-text').textContent = t('reconnecting');
   try { if (peer) peer.destroy(); } catch(e) {}
-  try {
-    peer = new Peer(PEER_CONFIG);
-  } catch(e) { return; }
+  try { peer = new Peer(PEER_CONFIG); } catch(e) { return; }
   peer.on('open', () => {
     const connection = peer.connect('chop5-' + roomCode, { reliable: true });
     const t1 = setTimeout(() => {
@@ -1793,11 +1700,7 @@ function attemptReconnect() {
     }, 8000);
     connection.on('open', () => {
       clearTimeout(t1);
-      connection.send({
-        type: 'join-reconnect',
-        name: playerNick,
-        sessionId: playerSessionId
-      });
+      connection.send({ type: 'join-reconnect', name: playerNick, sessionId: playerSessionId });
     });
     connection.on('data', (data) => {
       if (data.type === 'welcome') {
@@ -1806,10 +1709,6 @@ function attemptReconnect() {
         conns = [{ conn: connection, peerId: 'host', slot: 0 }];
         document.getElementById('connection-lost-overlay').classList.remove('active');
         showToast(t('reconnectSuccess'), 2000);
-        // если игра идёт — продолжаем
-        if (data.gameInProgress && !gameRunning) {
-          // перезапуск? на самом деле игра уже была — просто продолжаем
-        }
       } else {
         handlePeerData(data, connection);
       }
@@ -1824,9 +1723,7 @@ function attemptReconnect() {
   });
 }
 
-// ============================================================
-// ЛОББІ: ГОТОВНІСТЬ
-// ============================================================
+// ЛОББІ
 let myReady = false;
 
 document.getElementById('lobby-ready-btn').addEventListener('click', () => {
@@ -1906,7 +1803,7 @@ function renderPlayersList(containerId) {
 }
 
 // ============================================================
-// ОБРОБКА ПОВІДОМЛЕНЬ (хост + гості)
+// ОБРОБКА ПОВІДОМЛЕНЬ
 // ============================================================
 function handlePeerData(data, fromConn) {
   if (!data || !data.type) return;
@@ -1961,22 +1858,10 @@ function handlePeerData(data, fromConn) {
           target.facing = data.facing || 1;
           target.weaponIcon = data.weaponIcon || '🪓';
         }
-      }
-      break;
-    case 'all-players':
-      if (gameState && data.players) {
-        data.players.forEach(p => {
-          if (p.slot === mySlot) return;
-          if (!gameState.players[p.slot]) {
-            gameState.players[p.slot] = { x: p.x, y: p.y, targetX: p.x, targetY: p.y, vx: 0, vy: 0, r: 16, color: p.color, action: 'idle', facing: 1, weaponIcon: '🪓', weaponSpeed: 1.0, goldBonus: 0, name: p.name, slot: p.slot };
-          } else {
-            gameState.players[p.slot].targetX = p.x;
-            gameState.players[p.slot].targetY = p.y;
-            gameState.players[p.slot].action = p.action;
-            gameState.players[p.slot].facing = p.facing || 1;
-            gameState.players[p.slot].weaponIcon = p.weaponIcon || '🪓';
-          }
-        });
+        if (isHost && fromConn) {
+          const senderEntry = conns.find(c => c.conn === fromConn);
+          if (senderEntry) broadcastToAll(data, senderEntry.peerId);
+        }
       }
       break;
     case 'world':
@@ -1999,10 +1884,29 @@ function handlePeerData(data, fromConn) {
         if (tree && !tree.isWall) {
           tree.hp -= data.damage;
           tree.sway += 0.05;
+          if (fromConn) {
+            const senderEntry = conns.find(c => c.conn === fromConn);
+            if (senderEntry) {
+              broadcastToAll({ type: 'tree-hp-sync', id: data.id, hp: tree.hp, slot: data.slot }, senderEntry.peerId);
+            }
+          }
           if (tree.hp <= 0) {
             tree.hp = 0;
             hostProcessTreeFall(tree, data.slot);
           }
+        }
+      } else if (!isHost && data.hp !== undefined) {
+        const tree = gameState.trees.find(tr => tr.id === data.id);
+        if (tree && !(gameState.chopTarget && gameState.chopTarget.id === data.id)) {
+          tree.hp = data.hp;
+        }
+      }
+      break;
+    case 'tree-hp-sync':
+      if (gameState && data.id !== undefined) {
+        const tree = gameState.trees.find(tr => tr.id === data.id);
+        if (tree && !(gameState.chopTarget && gameState.chopTarget.id === data.id)) {
+          tree.hp = data.hp;
         }
       }
       break;
@@ -2018,7 +1922,6 @@ function handlePeerData(data, fromConn) {
         createExplosion(cx, cy, '#8B4513', 20);
         createExplosion(cx, cy - 20, treeType.leafColor, 12);
         if (data.slot === mySlot) {
-          // моё дерево срублено — обновляем счёт сам
           gameState.myScore += 1;
           const gold = data.gold || 0;
           playerProfile.gold += gold;
@@ -2072,6 +1975,10 @@ function handlePeerData(data, fromConn) {
       break;
     case 'troll-attack':
       receiveTrollAttack(data);
+      if (isHost && fromConn) {
+        const senderEntry = conns.find(c => c.conn === fromConn);
+        if (senderEntry) broadcastToAll(data, senderEntry.peerId);
+      }
       break;
   }
 }
@@ -2470,7 +2377,7 @@ document.querySelectorAll('.jail-answer-btn').forEach(btn => {
 });
 
 // ============================================================
-// ТРОЛЛЬ-МАГАЗИН: РЕНДЕР
+// ТРОЛЛЬ-МАГАЗИН
 // ============================================================
 function renderTrollShop() {
   const list = document.getElementById('troll-shop-list');
@@ -2575,13 +2482,9 @@ function useTrollDebuff(idx) {
     showToast(t('trollSoloApply'), 2200);
     applyDebuffEffect(id, def.duration, mySlot);
   } else {
-    // высылаем ВСЕМ другим игрокам
     const data = { type: 'troll-attack', debuffId: id, duration: def.duration, from: mySlot };
-    if (isHost) {
-      broadcastToAll(data);
-    } else {
-      sendToHost({ ...data, broadcast: true });
-    }
+    if (isHost) broadcastToAll(data);
+    else sendToHost(data);
   }
   trollActivationCooldown = performance.now() + 7000;
   playSFX('troll_send');
@@ -2637,13 +2540,11 @@ function applyDebuffEffect(id, duration, fromSlot) {
     return;
   }
   if (id === 'swap') {
-    // меняемся с одним случайным игроком
     const otherSlots = Object.keys(gameState.players).filter(s => parseInt(s) !== mySlot);
     if (otherSlots.length > 0) {
       const rndSlot = otherSlots[Math.floor(Math.random() * otherSlots.length)];
       const other = gameState.players[rndSlot];
       if (other) {
-        const px = gameState.player.x, py = gameState.player.y;
         gameState.player.x = other.x;
         gameState.player.y = other.y;
         gameState.player.targetX = gameState.player.x;
@@ -2697,7 +2598,6 @@ function applyDebuffEffect(id, duration, fromSlot) {
     debuffIntervals.push(t1);
     return;
   }
-  // ТОРНАДО — крутит экран
   if (id === 'whirl') {
     addDebuff('whirl', duration);
     const t2 = setInterval(() => {
@@ -2737,10 +2637,7 @@ function applyDebuffEffect(id, duration, fromSlot) {
     debuffIntervals.push(t3);
     return;
   }
-  if (id === 'jail') {
-    openJail(duration);
-    return;
-  }
+  if (id === 'jail') { openJail(duration); return; }
   addDebuff(id, duration);
 }
 
@@ -2767,11 +2664,8 @@ function renderBook() {
       <div class="tree-name">${known ? treeName(type) : '???'}</div>
       <div class="tree-count">${known ? (disc.count + ' 🪵') : '—'}</div>
     `;
-    if (known) {
-      card.addEventListener('click', () => showTreeDetail(type));
-    } else {
-      card.addEventListener('click', () => { playSFX('click'); showToast(t('notFound')); });
-    }
+    if (known) card.addEventListener('click', () => showTreeDetail(type));
+    else card.addEventListener('click', () => { playSFX('click'); showToast(t('notFound')); });
     grid.appendChild(card);
   });
 }
@@ -3034,7 +2928,6 @@ function resetGame(coop) {
     lastSync: 0, lastWorldSync: 0, lastScoreSync: 0, lastTimeSync: 0,
     gameTime: 0, timerEnded: false
   };
-  // инициализируем других игроков
   for (const slotStr in lobbyPlayersData) {
     const slot = parseInt(slotStr);
     if (slot !== mySlot) {
@@ -3354,7 +3247,6 @@ function updateGame(dt, ts) {
   p.x = Math.max(p.r, Math.min(worldW - p.r, p.x));
   p.y = Math.max(p.r, Math.min(worldH - p.r, p.y));
 
-  // обновляем позиции других игроков
   for (const slotStr in gameState.players) {
     const op = gameState.players[slotStr];
     if (!op) continue;
@@ -3384,7 +3276,6 @@ function updateGame(dt, ts) {
   camera.x += (camX - camera.x) * 0.18;
   camera.y += (camY - camera.y) * 0.18;
 
-  // СИНХРОНИЗАЦИЯ
   if (gameState.coop && conns.length > 0) {
     if (ts - gameState.lastSync > 60) {
       gameState.lastSync = ts;
@@ -3509,7 +3400,6 @@ function updateChop(dt, ts) {
         return;
       }
     } else {
-      // СОЛО
       const treeType = target.typeRef || TREE_TYPES[0];
       gameState.myScore += 1;
       roundStats.chopped++;
@@ -3583,16 +3473,11 @@ function hostProcessTreeFall(tree, slot) {
     }
     discoverTree(treeType.id);
   } else {
-    // гость срубил — отправляем ему gold
     const baseGold = treeType.goldMin + Math.floor(Math.random() * (treeType.goldMax - treeType.goldMin + 1));
     gold = baseGold;
   }
   gameState.trees = gameState.trees.filter(tr => tr.id !== tree.id);
-  // broadcast всем
-  broadcastToAll({
-    type: 'tree-fall',
-    id: tree.id, x: tree.x, y: tree.y, typeId: tree.typeId, slot, gold
-  });
+  broadcastToAll({ type: 'tree-fall', id: tree.id, x: tree.x, y: tree.y, typeId: tree.typeId, slot, gold });
   updateHUD();
   updateScoreboard();
   updateShopBalance();
@@ -3630,7 +3515,6 @@ function renderGame() {
     shakeX += (Math.random() - 0.5) * 8;
     shakeY += (Math.random() - 0.5) * 8;
   }
-  // ТОРНАДО — вращаем вокруг игрока
   if (hasActiveDebuff('whirl') && gameState.player) {
     const cx = gameState.player.x - camera.x;
     const cy = gameState.player.y - camera.y;
@@ -3658,7 +3542,6 @@ function renderGame() {
     drawTree({ x: pt.x, y: pt.y, r: 26, hp: 100, maxHp: 100, sway: performance.now() * 0.001, typeRef: pt.typeRef });
     gCtx.restore();
   });
-  // другие игроки
   for (const slotStr in gameState.players) {
     const op = gameState.players[slotStr];
     if (op) drawPlayer(op, true);
@@ -3828,7 +3711,6 @@ function endGameByTimer(p1Score, p2Score, scoresFromNet) {
   document.getElementById('final-gold').textContent = roundStats.gold;
   const scores = scoresFromNet || gameState.allScores || {};
   scores[mySlot] = myScore;
-  // показываем финальную таблицу
   const listEl = document.getElementById('final-scores-list');
   if (listEl && (gameState.coop || Object.keys(scores).length > 1)) {
     const sorted = Object.keys(scores).map(s => ({ slot: parseInt(s), score: scores[s] }))
@@ -4000,21 +3882,9 @@ document.getElementById('host-start-btn').addEventListener('click', () => {
   broadcastToAll({ type: 'start', sec: selectedDurationSec });
 });
 
-document.getElementById('host-leave-btn').addEventListener('click', () => {
-  playSFX('click');
-  leaveRoom();
-  setCoopView('start');
-});
-document.getElementById('wait-leave-btn').addEventListener('click', () => {
-  playSFX('click');
-  leaveRoom();
-  setCoopView('start');
-});
-document.getElementById('lobby-leave-btn').addEventListener('click', () => {
-  playSFX('click');
-  leaveRoom();
-  setCoopView('start');
-});
+document.getElementById('host-leave-btn').addEventListener('click', () => { playSFX('click'); leaveRoom(); setCoopView('start'); });
+document.getElementById('wait-leave-btn').addEventListener('click', () => { playSFX('click'); leaveRoom(); setCoopView('start'); });
+document.getElementById('lobby-leave-btn').addEventListener('click', () => { playSFX('click'); leaveRoom(); setCoopView('start'); });
 
 document.getElementById('troll-btn-ingame').addEventListener('click', () => {
   if (!gameRunning) return;
@@ -4088,6 +3958,7 @@ document.getElementById('settings-back').addEventListener('click', () => {
   document.getElementById('menu').classList.remove('hidden');
 });
 
+// СЕКРЕТНЕ ПОЛЕ
 document.getElementById('secret-code-input').addEventListener('change', function() {
   const code = this.value.trim().toLowerCase();
   if (!code) return;
@@ -4135,6 +4006,25 @@ document.getElementById('secret-code-input').addEventListener('change', function
     updateTrollBalance();
     showToast('💰 +10000 золота, +50 коїнів');
     this.value = '';
+  } else if (code === 'nick') {
+    const newNick = prompt(
+      currentLang === 'ru' ? 'Введите новый ник (2-15 символов):' : 'Введіть новий нік (2-15 символів):',
+      playerNick
+    );
+    if (newNick === null) { this.value = ''; return; }
+    const trimmed = newNick.trim();
+    if (trimmed.length < 2) { showToast(t('nickError')); this.value = ''; return; }
+    if (trimmed.length > 15) { showToast(t('nickTooLong')); this.value = ''; return; }
+    saveNick(trimmed);
+    showToast(t('nickSaved') + ' → ' + trimmed);
+    this.value = '';
+  } else if (code.startsWith('nick ')) {
+    const newNick = code.substring(5).trim();
+    if (newNick.length < 2) { showToast(t('nickError')); this.value = ''; return; }
+    if (newNick.length > 15) { showToast(t('nickTooLong')); this.value = ''; return; }
+    saveNick(newNick);
+    showToast(t('nickSaved') + ' → ' + newNick);
+    this.value = '';
   } else {
     this.value = '';
     this.style.borderColor = '#ff4444';
@@ -4163,8 +4053,8 @@ document.getElementById('reset-all-btn').addEventListener('click', () => {
 document.getElementById('about-btn').addEventListener('click', () => {
   playSFX('click');
   const text = currentLang === 'ru'
-    ? '🪓 CHOP BATTLE\n\n🎯 Цель: нарубить больше дерева!\n\n🌳 10 видов деревьев\n\n👥 ДО 5 ИГРОКОВ: создай комнату, отправь код друзьям. Начни когда все готовы\n\n🔄 ПЕРЕПОДКЛЮЧЕНИЕ: если вышел — вернись по коду до конца раунда\n\n🐦 КЛЕТКА: решай примеры умножения!\n\n😈 ТРОЛЛЬ-МАГАЗИН: 16 дебаффов'
-    : '🪓 CHOP BATTLE\n\n🎯 Мета: нарубати більше дерева!\n\n🌳 10 видів дерев\n\n👥 ДО 5 ГРАВЦІВ: створи кімнату, відправ код друзям. Почни коли всі готові\n\n🔄 ПЕРЕПІДКЛЮЧЕННЯ: якщо вийшов — повернись за кодом до кінця раунду\n\n🐦 КЛІТКА: розв\'язуй приклади множення!\n\n😈 ТРОЛЬ-МАГАЗИН: 16 дебафів';
+    ? '🪓 CHOP BATTLE\n\n🎯 Цель: нарубить больше дерева!\n\n🌳 10 видов деревьев\n\n👥 ДО 5 ИГРОКОВ\n\n🔄 ПЕРЕПОДКЛЮЧЕНИЕ\n\n🐦 КЛЕТКА: решай примеры умножения!\n\n😈 ТРОЛЛЬ-МАГАЗИН: 16 дебаффов\n\n💡 СЕКРЕТНАЯ КОМАНДА: nick (смена ника), gold (золото), troll (дебаффы)'
+    : '🪓 CHOP BATTLE\n\n🎯 Мета: нарубати більше дерева!\n\n🌳 10 видів дерев\n\n👥 ДО 5 ГРАВЦІВ\n\n🔄 ПЕРЕПІДКЛЮЧЕННЯ\n\n🐦 КЛІТКА: розв\'язуй приклади множення!\n\n😈 ТРОЛЬ-МАГАЗИН: 16 дебафів\n\n💡 СЕКРЕТНА КОМАНДА: nick (зміна ніка), gold (золото), troll (дебафи)';
   alert(text);
 });
 
@@ -4306,10 +4196,7 @@ document.getElementById('sound-btn').addEventListener('click', function() {
   if (!musicEnabled && musicPlaying) stopMusic();
 });
 
-document.getElementById('reconnect-btn').addEventListener('click', () => {
-  playSFX('click');
-  attemptReconnect();
-});
+document.getElementById('reconnect-btn').addEventListener('click', () => { playSFX('click'); attemptReconnect(); });
 document.getElementById('reconnect-exit-btn').addEventListener('click', () => {
   playSFX('click');
   intentionalLeave = true;
@@ -4343,7 +4230,6 @@ function setCoopView(v) {
   };
   const titleEl = document.getElementById('coop-title');
   if (titleEl) titleEl.textContent = titles[v];
-  // сброс кнопки готовности
   const btn = document.getElementById('lobby-ready-btn');
   if (btn) {
     btn.disabled = false;
@@ -4355,9 +4241,6 @@ function setCoopView(v) {
   }
 }
 
-// ============================================================
-// РЕНДЕР ДОСЯГНЕНЬ
-// ============================================================
 function renderAchievements() {
   const list = document.getElementById('ach-list');
   const stats = document.getElementById('ach-stats');
@@ -4394,9 +4277,6 @@ function renderAchievements() {
   });
 }
 
-// ============================================================
-// МУЗИЧНИЙ СПИСОК
-// ============================================================
 function renderMusicList() {
   const list = document.getElementById('music-list');
   if (!list) return;
@@ -4422,9 +4302,6 @@ function renderMusicList() {
   });
 }
 
-// ============================================================
-// ЗАСТОСУВАННЯ МОВИ
-// ============================================================
 function applyLanguage() {
   document.documentElement.lang = currentLang;
   document.getElementById('subtitle-text').textContent = t('subtitle');
@@ -4443,7 +4320,6 @@ function applyLanguage() {
   document.getElementById('sec-controls-title').textContent = t('secControls');
   document.getElementById('sec-net-title').textContent = t('secNetwork');
   document.getElementById('sec-data-title').textContent = t('secData');
-  document.getElementById('sec-nick-title').textContent = t('secNick');
   document.getElementById('lang-label').textContent = t('langLabel');
   document.getElementById('lbl-music').textContent = t('lblMusic');
   document.getElementById('lbl-sfx').textContent = t('lblSfx');
@@ -4457,9 +4333,6 @@ function applyLanguage() {
   document.getElementById('lbl-fullscreen').textContent = t('lblFullscreen');
   document.getElementById('lbl-ping').textContent = t('lblPing');
   document.getElementById('lbl-reset').textContent = t('lblReset');
-  document.getElementById('lbl-nick').textContent = t('lblNick');
-  document.getElementById('lbl-nick-save').textContent = t('lblNickSave');
-  document.getElementById('nick-save-text').textContent = t('nickSaveBtn');
   document.getElementById('fs-btn-text').textContent = t('fsOn');
   document.getElementById('reset-btn-text').textContent = t('resetBtn');
   document.getElementById('coop-hint-text').innerHTML = t('coopHint');
@@ -4519,7 +4392,7 @@ function applyLanguage() {
 }
 
 // ============================================================
-// РЕСАЙЗ
+// РЕСАЙЗ + ІНІЦІАЛІЗАЦІЯ
 // ============================================================
 let resizeTimeout;
 window.addEventListener('resize', () => {
@@ -4533,9 +4406,6 @@ window.addEventListener('orientationchange', () => {
   setTimeout(() => { resizeBg(); if (gameRunning) resizeGame(); }, 300);
 });
 
-// ============================================================
-// ІНІЦІАЛІЗАЦІЯ
-// ============================================================
 (function loadSettings() {
   const q = localStorage.getItem('chopbattle_quality');
   if (q) document.getElementById('quality-select').value = q;
@@ -4556,7 +4426,6 @@ updateControlsVisibility();
 updateShopBalance();
 updateTrollBalance();
 applyLanguage();
-updateNickInputs();
 
 if (!playerNick) {
   showNickPopup();
