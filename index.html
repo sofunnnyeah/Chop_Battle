@@ -14,6 +14,28 @@ html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; font-f
 #game-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
 #bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .bg-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #1a2a1a 0%, #0a0f0a 75%); z-index: 0; }
+
+/* ===== ПОГОДНІ СЛОЇ ===== */
+#weather-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 12;
+  transition: opacity 1s;
+}
+#weather-overlay.clear { background: transparent; }
+#weather-overlay.rain { background: linear-gradient(180deg, rgba(50, 70, 90, 0.35) 0%, rgba(20, 30, 40, 0.15) 100%); }
+#weather-overlay.snow { background: linear-gradient(180deg, rgba(180, 200, 220, 0.25) 0%, rgba(100, 120, 140, 0.1) 100%); }
+#weather-overlay.fog { background: radial-gradient(circle at var(--fog-x, 50%) var(--fog-y, 50%), transparent 0%, transparent 200px, rgba(120, 130, 140, 0.85) 380px, rgba(120, 130, 140, 0.95) 500px); }
+#weather-overlay.autumn { background: linear-gradient(180deg, rgba(180, 120, 40, 0.15) 0%, rgba(100, 60, 20, 0.08) 100%); }
+#weather-overlay.wind { background: linear-gradient(90deg, rgba(160, 200, 220, 0.1) 0%, transparent 30%, transparent 70%, rgba(160, 200, 220, 0.1) 100%); }
+#weather-overlay.night { background: radial-gradient(circle at var(--fog-x, 50%) var(--fog-y, 50%), transparent 0%, transparent 250px, rgba(10, 15, 35, 0.88) 500px, rgba(5, 8, 25, 0.96) 800px); }
+#weather-overlay.rainbow { background: linear-gradient(135deg, rgba(255, 100, 100, 0.12), rgba(255, 200, 100, 0.1), rgba(100, 255, 100, 0.1), rgba(100, 200, 255, 0.12), rgba(200, 100, 255, 0.1)); }
+#weather-overlay.heat { background: linear-gradient(180deg, rgba(200, 80, 20, 0.28) 0%, rgba(120, 40, 10, 0.15) 100%); }
+#weather-overlay.magnetic { background: linear-gradient(180deg, rgba(40, 60, 140, 0.35) 0%, rgba(20, 20, 70, 0.25) 100%); }
+
+#weather-particles {
+  position: absolute; inset: 0; pointer-events: none; z-index: 13;
+}
+
+/* ===== НІК ПОПАП ===== */
 #nickname-overlay { position: absolute; inset: 0; z-index: 300; background: radial-gradient(ellipse at 50% 50%, #1a2a1a 0%, #0a0f0a 90%); display: flex; align-items: center; justify-content: center; padding: 20px; }
 #nickname-overlay.hidden { display: none; }
 #nickname-box { background: linear-gradient(135deg, rgba(20, 40, 20, 0.98), rgba(10, 20, 10, 0.98)); border: 3px solid #7fff00; border-radius: 20px; padding: clamp(24px, 4vh, 40px) clamp(20px, 5vw, 40px); text-align: center; max-width: 90vw; width: 400px; box-shadow: 0 0 60px rgba(127, 255, 0, 0.5), inset 0 0 30px rgba(127, 255, 0, 0.1); animation: nicknamePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -27,6 +49,7 @@ html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; font-f
 #nickname-error.show { opacity: 1; }
 #nickname-save { width: 100%; padding: 14px 24px; background: linear-gradient(135deg, #7fff00, #00ff88); border: none; border-radius: 12px; color: #0a0f0a; font-size: clamp(14px, 4vw, 18px); font-weight: 900; letter-spacing: 3px; cursor: pointer; font-family: inherit; box-shadow: 0 0 25px rgba(127, 255, 0, 0.6); transition: all 0.15s; touch-action: manipulation; }
 #nickname-save:active { transform: scale(0.95); }
+
 #menu { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; padding: max(15px, env(safe-area-inset-top)) max(15px, env(safe-area-inset-right)) max(15px, env(safe-area-inset-bottom)) max(15px, env(safe-area-inset-left)); transition: opacity 0.5s, transform 0.5s; }
 #menu.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
 .logo { font-size: clamp(28px, 9vw, 72px); font-weight: 900; letter-spacing: 4px; background: linear-gradient(90deg, #7fff00, #8B4513, #7fff00); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite, float 4s ease-in-out infinite; text-align: center; filter: drop-shadow(0 0 20px rgba(127, 255, 0, 0.5)); line-height: 1.1; }
@@ -311,6 +334,10 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
   <div class="bg-gradient"></div>
   <canvas id="bg-canvas"></canvas>
 
+  <!-- Погодні шари -->
+  <div id="weather-overlay" class="clear"></div>
+  <div id="weather-particles"></div>
+
   <div id="nickname-overlay">
     <div id="nickname-box">
       <div id="nickname-title">👋 ЛАСКАВО ПРОСИТИ!</div>
@@ -480,10 +507,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       <h2 class="panel-title" id="settings-title-text">НАЛАШТУВАННЯ</h2>
 
       <div class="settings-section" data-section="language">
-        <div class="settings-section-header">
-          <span>🌍</span><span id="sec-lang-title">Мова</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>🌍</span><span id="sec-lang-title">Мова</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row">
             <label id="lang-label">Мова інтерфейсу</label>
@@ -496,10 +520,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       </div>
 
       <div class="settings-section" data-section="sound">
-        <div class="settings-section-header">
-          <span>🔊</span><span id="sec-sound-title">Звук</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>🔊</span><span id="sec-sound-title">Звук</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row"><label id="lbl-music">Музика</label><div class="toggle" id="toggle-music"></div></div>
           <div class="setting-row"><label id="lbl-sfx">Звуки</label><div class="toggle on" id="toggle-sfx"></div></div>
@@ -508,10 +529,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       </div>
 
       <div class="settings-section" data-section="graphics">
-        <div class="settings-section-header">
-          <span>🎨</span><span id="sec-graphics-title">Графіка</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>🎨</span><span id="sec-graphics-title">Графіка</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row">
             <label id="lbl-quality">Якість</label>
@@ -534,10 +552,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       </div>
 
       <div class="settings-section" data-section="controls">
-        <div class="settings-section-header">
-          <span>🎮</span><span id="sec-controls-title">Керування</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>🎮</span><span id="sec-controls-title">Керування</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row">
             <label id="lbl-control-mode">Режим</label>
@@ -552,10 +567,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       </div>
 
       <div class="settings-section" data-section="network">
-        <div class="settings-section-header">
-          <span>📡</span><span id="sec-net-title">Мережа</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>📡</span><span id="sec-net-title">Мережа</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row">
             <label id="lbl-ping">Ping</label>
@@ -565,10 +577,7 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
       </div>
 
       <div class="settings-section" data-section="data">
-        <div class="settings-section-header">
-          <span>💾</span><span id="sec-data-title">Дані</span>
-          <span class="arrow">▼</span>
-        </div>
+        <div class="settings-section-header"><span>💾</span><span id="sec-data-title">Дані</span><span class="arrow">▼</span></div>
         <div class="settings-section-body">
           <div class="setting-row">
             <label style="color:#7fff00;">🔐 Секретна команда</label>
@@ -690,6 +699,8 @@ body.bats-overlay #game-screen::after { content: ''; position: absolute; inset: 
     </div>
   </div>
 </div>
+</body>
+</html>
 
 <script>
 // ============================================================
@@ -712,7 +723,7 @@ const I18N = {
     hostLeave: '✕ Закрити', joinTitle: 'ВВЕДІТЬ КОД', joinConnect: '🔗 Підключитися', joinCancel: '✕ Скасувати',
     waitTitle: 'ПІДКЛЮЧЕННЯ...', waitHint: 'Очікування гравця', waitLeave: '✕ Вийти',
     lobbyTitle: 'ЛОБІ', lobbyReady: '✓ Я готовий', lobbyReadyDone: '✓ Готовий!',
-    lobbyLeave: '✕ Вийти', lobbyHint: 'Готуйся до старту!', lobbyHintHost: 'Чекаємо всіх готових...',
+    lobbyLeave: '✕ Вийти', lobbyHint: 'Готуйся до старту!',
     hostStartHint: 'Очікування готовності всіх гравців...', hostStartReady: '✅ Всі готові! Тисни Почати',
     pauseTitle: 'ПАУЗА', pauseSubtitle: 'Тільки для тебе. Інші продовжують гру',
     resume: '▶ Продовжити', pauseShop: '🛒 Магазин', pauseMenu: '⌂ В меню',
@@ -732,7 +743,7 @@ const I18N = {
     you: 'Ти', host: 'Хост', guest: 'Гість', online: 'онлайн', click: 'Натисни',
     nickTitle: '👋 ЛАСКАВО ПРОСИТИ!', nickSubtitle: 'Як тебе звати?', nickPlaceholder: 'Твій нік...',
     nickError: '❌ Мінімум 2 символи!', nickSave: '✓ ЗБЕРЕГТИ', nickTooLong: '❌ Максимум 15 символів!',
-    nickTaken: '❌ Цей нік вже зайнято!', nickSaved: '✅ Нік збережено!',
+    nickSaved: '✅ Нік збережено!',
     reconnectTitle: "ЗВ'ЯЗОК ВТРАЧЕНО", reconnectText: 'Намагаємось перепідключитись...',
     reconnectBtn: '🔄 СПРОБУВАТИ ЗАРАЗ', reconnectExit: '✕ ВИЙТИ',
     reconnecting: '🔄 Підключення...', reconnectSuccess: '✅ Знову в грі!', reconnectFailed: '❌ Не вдалося',
@@ -753,8 +764,7 @@ const I18N = {
     trollSoloApply: '😈 Дебаф застосовано до тебе (соло)',
     shieldBlock: '🛡️ Шлем поглинув дебафф!',
     jailTitle: '🐦 ТИ В КЛІТЦІ!', jailTimer: 'сек', jailProgress: 'Завдання',
-    jailCorrect: '✅ Правильно!', jailWrong: '❌ Неправильно!', jailEscaped: '🎉 Ти вибрався! +15💰',
-    jailFail: '⏰ Час вийшов! -20💰',
+    jailEscaped: '🎉 Ти вибрався! +15💰', jailFail: '⏰ Час вийшов! -20💰',
     dbSlug: 'Слизький пень', dbSlugDesc: '-50% швидкості на 40 сек',
     dbFog: 'Туман', dbFogDesc: 'Екран темніє на 35 сек',
     dbReverse: 'Реверс', dbReverseDesc: 'Інверсія керування 30 сек',
@@ -788,7 +798,7 @@ const I18N = {
     hostLeave: '✕ Закрыть', joinTitle: 'ВВЕДИТЕ КОД', joinConnect: '🔗 Подключиться', joinCancel: '✕ Отмена',
     waitTitle: 'ПОДКЛЮЧЕНИЕ...', waitHint: 'Ожидание игрока', waitLeave: '✕ Выйти',
     lobbyTitle: 'ЛОББИ', lobbyReady: '✓ Я готов', lobbyReadyDone: '✓ Готов!',
-    lobbyLeave: '✕ Выйти', lobbyHint: 'Готовься к старту!', lobbyHintHost: 'Ждём всех готовых...',
+    lobbyLeave: '✕ Выйти', lobbyHint: 'Готовься к старту!',
     hostStartHint: 'Ожидание готовности всех игроков...', hostStartReady: '✅ Все готовы! Жми Начать',
     pauseTitle: 'ПАУЗА', pauseSubtitle: 'Только для тебя. Остальные продолжают игру',
     resume: '▶ Продолжить', pauseShop: '🛒 Магазин', pauseMenu: '⌂ В меню',
@@ -808,7 +818,7 @@ const I18N = {
     you: 'Ты', host: 'Хост', guest: 'Гость', online: 'онлайн', click: 'Нажми',
     nickTitle: '👋 ДОБРО ПОЖАЛОВАТЬ!', nickSubtitle: 'Как тебя зовут?', nickPlaceholder: 'Твой ник...',
     nickError: '❌ Минимум 2 символа!', nickSave: '✓ СОХРАНИТЬ', nickTooLong: '❌ Максимум 15 символов!',
-    nickTaken: '❌ Этот ник уже занят!', nickSaved: '✅ Ник сохранён!',
+    nickSaved: '✅ Ник сохранён!',
     reconnectTitle: 'СВЯЗЬ ПОТЕРЯНА', reconnectText: 'Пытаемся переподключиться...',
     reconnectBtn: '🔄 ПОПРОБОВАТЬ СЕЙЧАС', reconnectExit: '✕ ВЫЙТИ',
     reconnecting: '🔄 Подключение...', reconnectSuccess: '✅ Снова в игре!', reconnectFailed: '❌ Не удалось',
@@ -829,8 +839,7 @@ const I18N = {
     trollSoloApply: '😈 Дебафф применён к тебе (соло)',
     shieldBlock: '🛡️ Шлем поглотил дебафф!',
     jailTitle: '🐦 ТЫ В КЛЕТКЕ!', jailTimer: 'сек', jailProgress: 'Задание',
-    jailCorrect: '✅ Правильно!', jailWrong: '❌ Неправильно!', jailEscaped: '🎉 Ты выбрался! +15💰',
-    jailFail: '⏰ Время вышло! -20💰',
+    jailEscaped: '🎉 Ты выбрался! +15💰', jailFail: '⏰ Время вышло! -20💰',
     dbSlug: 'Скользкий пень', dbSlugDesc: '-50% скорости на 40 сек',
     dbFog: 'Туман', dbFogDesc: 'Экран темнеет на 35 сек',
     dbReverse: 'Реверс', dbReverseDesc: 'Инверсия управления 30 сек',
@@ -869,10 +878,7 @@ let playerSessionId = '';
 function loadNick() {
   try {
     const saved = localStorage.getItem(NICK_KEY);
-    if (saved && saved.length >= 2) {
-      playerNick = saved;
-      return true;
-    }
+    if (saved && saved.length >= 2) { playerNick = saved; return true; }
   } catch(e) {}
   return false;
 }
@@ -982,20 +988,59 @@ document.querySelectorAll('.duration-btn').forEach(btn => {
       document.getElementById('coop-hint-text').innerHTML = t('coopHint');
       playSFX('click');
       showToast((currentLang === 'ru' ? '⏱ Время: ' : '⏱ Час: ') + mins + (currentLang === 'ru' ? ' мин' : ' хв'));
-      if (isHost && conns.length > 0) {
-        broadcastToAll({ type: 'duration', sec: selectedDurationSec });
-      }
+      if (isHost && conns.length > 0) broadcastToAll({ type: 'duration', sec: selectedDurationSec });
       return;
     }
     selectedDurationSec = parseInt(btn.dataset.sec);
     gameDurationMs = selectedDurationSec * 1000;
     updateDurationButtons();
     playSFX('click');
-    if (isHost && conns.length > 0) {
-      broadcastToAll({ type: 'duration', sec: selectedDurationSec });
-    }
+    if (isHost && conns.length > 0) broadcastToAll({ type: 'duration', sec: selectedDurationSec });
   });
 });
+
+// ============================================================
+// ПОГОДА — 10 ВИДІВ З ШАНСАМИ
+// ============================================================
+const WEATHERS = [
+  { id: 'clear',    name: 'Ясно',     icon: '☀️', chance: 25,  rarity: 'common',    cssClass: 'clear',
+    speedMult: 1.0,  goldMult: 1.0,  visionRadius: 0, particleType: 'none' },
+  { id: 'rain',     name: 'Дождь',    icon: '🌧️', chance: 20,  rarity: 'common',    cssClass: 'rain',
+    speedMult: 0.8,  goldMult: 1.0,  visionRadius: 0, particleType: 'rain' },
+  { id: 'wind',     name: 'Вітер',    icon: '💨', chance: 15,  rarity: 'common',    cssClass: 'wind',
+    speedMult: 1.2,  goldMult: 1.0,  visionRadius: 0, particleType: 'leaf' },
+  { id: 'fog',      name: 'Туман',    icon: '🌫️', chance: 12,  rarity: 'uncommon',  cssClass: 'fog',
+    speedMult: 1.0,  goldMult: 1.0,  visionRadius: 300, particleType: 'none' },
+  { id: 'autumn',   name: 'Осінь',    icon: '🍂', chance: 10,  rarity: 'uncommon',  cssClass: 'autumn',
+    speedMult: 1.0,  goldMult: 1.0,  visionRadius: 0, particleType: 'leaf' },
+  { id: 'snow',     name: 'Сніг',     icon: '❄️', chance: 8,   rarity: 'rare',      cssClass: 'snow',
+    speedMult: 0.7,  goldMult: 1.5,  visionRadius: 0, particleType: 'snow' },
+  { id: 'night',    name: 'Ніч',      icon: '🌙', chance: 5,   rarity: 'rare',      cssClass: 'night',
+    speedMult: 1.0,  goldMult: 1.2,  visionRadius: 400, particleType: 'star' },
+  { id: 'rainbow',  name: 'Радуга',   icon: '🌈', chance: 3,   rarity: 'epic',      cssClass: 'rainbow',
+    speedMult: 1.0,  goldMult: 1.3,  visionRadius: 0, particleType: 'sparkle' },
+  { id: 'heat',     name: 'Жара',     icon: '🔥', chance: 1.5, rarity: 'epic',      cssClass: 'heat',
+    speedMult: 0.9,  goldMult: 2.0,  visionRadius: 0, particleType: 'ember' },
+  { id: 'magnetic', name: 'Магнітна буря', icon: '⚡', chance: 0.5, rarity: 'legendary', cssClass: 'magnetic',
+    speedMult: 1.0,  goldMult: 1.5,  visionRadius: 0, particleType: 'lightning', showAllNicks: true }
+];
+
+const WEATHER_CHANGE_INTERVAL = 5 * 60 * 1000; // 5 минут
+let currentWeather = WEATHERS[0]; // начинаем с ясно
+let weatherStartTime = 0;
+let lastWeatherId = null;
+
+function pickRandomWeather() {
+  // Сумма шансов = 100
+  let total = 0;
+  WEATHERS.forEach(w => { total += w.chance; });
+  let r = Math.random() * total;
+  for (const w of WEATHERS) {
+    r -= w.chance;
+    if (r <= 0) return w;
+  }
+  return WEATHERS[0];
+}
 
 // ============================================================
 // ДЕРЕВА
@@ -1058,7 +1103,8 @@ function treeRarity(type) { return t(type.rarityKey); }
 function treeDesc(type) { return currentLang === 'ru' ? type.descRu : type.descUk; }
 
 // ============================================================
-// МУЗИКА// ============================================================
+// МУЗИКА
+// ============================================================
 const MUSIC_TRACKS = {
   forest: { name: 'Forest Ambience', descUk: 'Ліс вдень', descRu: 'Лес днём', icon: '🌲', bpm: 80,
     scale: [174.61, 196, 220, 261.63, 293.66], bass: [43.65, 49, 55, 65.41], wave: 'sine', bassWave: 'triangle', drums: false },
@@ -1468,10 +1514,6 @@ function sendToHost(data) {
   return false;
 }
 
-function getLobbySlotColor(slot) {
-  return PLAYER_COLORS[slot] || '#888';
-}
-
 function getFreeHostSlot() {
   for (let i = 1; i < MAX_PLAYERS; i++) {
     if (!lobbyPlayersData[i]) return i;
@@ -1523,7 +1565,6 @@ function handleIncomingConnection(connection) {
 function handleJoinRequest(connection, data) {
   const sessionId = data.sessionId || '';
   let name = (data.name || 'Guest').substring(0, 15);
-  // Проверка уникальности ника (только для новых игроков)
   let existingSessionSlots = Object.keys(lobbyPlayersData).map(Number);
   const isReconnect = existingSessionSlots.some(slot => slot > 0 && lobbyPlayersData[slot].sessionId === sessionId);
   if (!isReconnect) {
@@ -1890,10 +1931,7 @@ function handlePeerData(data, fromConn) {
               broadcastToAll({ type: 'tree-hp-sync', id: data.id, hp: tree.hp, slot: data.slot }, senderEntry.peerId);
             }
           }
-          if (tree.hp <= 0) {
-            tree.hp = 0;
-            hostProcessTreeFall(tree, data.slot);
-          }
+          if (tree.hp <= 0) { tree.hp = 0; hostProcessTreeFall(tree, data.slot); }
         }
       } else if (!isHost && data.hp !== undefined) {
         const tree = gameState.trees.find(tr => tr.id === data.id);
@@ -1950,6 +1988,12 @@ function handlePeerData(data, fromConn) {
         if (!gameState.trees.find(tr => tr.id === data.tree.id)) {
           gameState.trees.push({ ...data.tree, typeRef: TREE_TYPES.find(tt => tt.id === data.tree.typeId) || TREE_TYPES[0], sway: Math.random() * Math.PI * 2 });
         }
+      }
+      break;
+    case 'weather':
+      if (data.weatherId) {
+        const w = WEATHERS.find(w => w.id === data.weatherId);
+        if (w) applyWeather(w, false);
       }
       break;
     case 'scores':
@@ -2139,6 +2183,264 @@ let roundStats = {
 
 const keys = { w: false, a: false, s: false, d: false, up: false, down: false, left: false, right: false };
 let useKeyboard = false;
+
+// ============================================================
+// ПОГОДНА СИСТЕМА
+// ============================================================
+let weatherParticles = [];
+let weatherLastChangeCheck = 0;
+
+function applyWeather(weather, broadcast) {
+  if (!weather) return;
+  currentWeather = weather;
+  weatherStartTime = performance.now();
+  lastWeatherId = weather.id;
+
+  const overlay = document.getElementById('weather-overlay');
+  if (overlay) {
+    overlay.className = weather.cssClass;
+    if (weather.id === 'magnetic') overlay.classList.add('magnetic');
+  }
+
+  // Создаём частицы для погоды
+  weatherParticles = [];
+  const W = window.innerWidth, H = window.innerHeight;
+  if (weather.particleType === 'rain') {
+    const count = isMobileDevice ? 60 : 120;
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: 12 + Math.random() * 8,
+        length: 10 + Math.random() * 10,
+        alpha: 0.3 + Math.random() * 0.4
+      });
+    }
+  } else if (weather.particleType === 'snow') {
+    const count = isMobileDevice ? 40 : 80;
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: 0.5 + Math.random() * 1.5,
+        drift: (Math.random() - 0.5) * 0.8,
+        size: 2 + Math.random() * 3,
+        alpha: 0.5 + Math.random() * 0.5
+      });
+    }
+  } else if (weather.particleType === 'leaf') {
+    const count = isMobileDevice ? 20 : 40;
+    const colors = weather.id === 'autumn'
+      ? ['#d97706', '#b45309', '#ea580c', '#a16207']
+      : ['#84cc16', '#65a30d', '#4d7c0f', '#a3e635'];
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: 1 + Math.random() * 2,
+        drift: 1.5 + Math.random() * 2,
+        size: 4 + Math.random() * 4,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.7 + Math.random() * 0.3
+      });
+    }
+  } else if (weather.particleType === 'ember') {
+    const count = isMobileDevice ? 25 : 50;
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: -0.5 - Math.random() * 1.5,
+        drift: (Math.random() - 0.5) * 0.5,
+        size: 1.5 + Math.random() * 2.5,
+        alpha: 0.6 + Math.random() * 0.4,
+        hue: 20 + Math.random() * 30
+      });
+    }
+  } else if (weather.particleType === 'sparkle') {
+    const count = isMobileDevice ? 20 : 40;
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        size: 2 + Math.random() * 3,
+        alpha: 0.4 + Math.random() * 0.6,
+        hue: Math.random() * 360,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+  } else if (weather.particleType === 'lightning') {
+    for (let i = 0; i < 3; i++) {
+      weatherParticles.push({ timer: Math.random() * 3000 });
+    }
+  } else if (weather.particleType === 'star') {
+    const count = isMobileDevice ? 30 : 60;
+    for (let i = 0; i < count; i++) {
+      weatherParticles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        size: 1 + Math.random() * 2,
+        alpha: 0.3 + Math.random() * 0.7,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  // Отправляем другим игрокам (только хост)
+  if (broadcast && isHost && gameState && gameState.coop && conns.length > 0) {
+    broadcastToAll({ type: 'weather', weatherId: weather.id });
+  }
+}
+
+function pickAndApplyWeather(broadcast) {
+  let newWeather;
+  let attempts = 0;
+  do {
+    newWeather = pickRandomWeather();
+    attempts++;
+  } while (newWeather.id === lastWeatherId && attempts < 10);
+  applyWeather(newWeather, broadcast);
+}
+
+function updateWeatherParticles(dt) {
+  const W = window.innerWidth, H = window.innerHeight;
+  const w = currentWeather;
+  if (!w) return;
+
+  weatherParticles.forEach(p => {
+    if (w.particleType === 'rain') {
+      p.y += p.speed;
+      p.x -= 1;
+      if (p.y > H) { p.y = -10; p.x = Math.random() * W; }
+      if (p.x < -10) p.x = W + 10;
+    } else if (w.particleType === 'snow') {
+      p.y += p.speed;
+      p.x += p.drift + Math.sin(p.y * 0.02) * 0.5;
+      if (p.y > H) { p.y = -10; p.x = Math.random() * W; }
+      if (p.x < -10) p.x = W;
+      if (p.x > W + 10) p.x = 0;
+    } else if (w.particleType === 'leaf') {
+      p.y += p.speed;
+      p.x += p.drift;
+      p.rotation += p.rotSpeed;
+      if (p.y > H) { p.y = -10; p.x = -20; }
+      if (p.x > W + 20) p.x = -20;
+    } else if (w.particleType === 'ember') {
+      p.y += p.speed;
+      p.x += p.drift;
+      if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+      if (p.x < -10) p.x = W;
+      if (p.x > W + 10) p.x = 0;
+    } else if (w.particleType === 'sparkle') {
+      p.twinkle += 0.05;
+    } else if (w.particleType === 'star') {
+      p.twinkle += 0.03;
+    } else if (w.particleType === 'lightning') {
+      p.timer -= dt;
+      if (p.timer <= 0) {
+        p.timer = 2000 + Math.random() * 4000;
+        p.flash = 1;
+      }
+      if (p.flash) p.flash = Math.max(0, p.flash - dt * 0.01);
+    }
+  });
+}
+
+function renderWeatherParticles() {
+  const W = window.innerWidth, H = window.innerHeight;
+  const w = currentWeather;
+  if (!w) return;
+
+  gCtx.save();
+
+  if (w.particleType === 'rain') {
+    gCtx.strokeStyle = 'rgba(200, 220, 255, 0.5)';
+    gCtx.lineWidth = 1.5;
+    weatherParticles.forEach(p => {
+      gCtx.globalAlpha = p.alpha;
+      gCtx.beginPath();
+      gCtx.moveTo(p.x, p.y);
+      gCtx.lineTo(p.x - 1, p.y + p.length);
+      gCtx.stroke();
+    });
+  } else if (w.particleType === 'snow') {
+    gCtx.fillStyle = '#ffffff';
+    weatherParticles.forEach(p => {
+      gCtx.globalAlpha = p.alpha;
+      gCtx.beginPath();
+      gCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      gCtx.fill();
+    });
+  } else if (w.particleType === 'leaf') {
+    weatherParticles.forEach(p => {
+      gCtx.globalAlpha = p.alpha;
+      gCtx.save();
+      gCtx.translate(p.x, p.y);
+      gCtx.rotate(p.rotation);
+      gCtx.fillStyle = p.color;
+      gCtx.beginPath();
+      gCtx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
+      gCtx.fill();
+      gCtx.restore();
+    });
+  } else if (w.particleType === 'ember') {
+    weatherParticles.forEach(p => {
+      gCtx.globalAlpha = p.alpha;
+      const grad = gCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
+      grad.addColorStop(0, `hsla(${p.hue}, 100%, 60%, 1)`);
+      grad.addColorStop(0.5, `hsla(${p.hue}, 100%, 50%, 0.5)`);
+      grad.addColorStop(1, 'transparent');
+      gCtx.fillStyle = grad;
+      gCtx.beginPath();
+      gCtx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+      gCtx.fill();
+    });
+  } else if (w.particleType === 'sparkle') {
+    weatherParticles.forEach(p => {
+      const a = p.alpha * (0.5 + Math.sin(p.twinkle) * 0.5);
+      gCtx.globalAlpha = a;
+      gCtx.fillStyle = `hsl(${p.hue}, 100%, 70%)`;
+      gCtx.beginPath();
+      gCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      gCtx.fill();
+    });
+  } else if (w.particleType === 'star') {
+    weatherParticles.forEach(p => {
+      const a = p.alpha * (0.4 + Math.sin(p.twinkle) * 0.6);
+      gCtx.globalAlpha = a;
+      gCtx.fillStyle = '#fff';
+      gCtx.beginPath();
+      gCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      gCtx.fill();
+    });
+  } else if (w.particleType === 'lightning') {
+    weatherParticles.forEach(p => {
+      if (p.flash && p.flash > 0) {
+        gCtx.globalAlpha = p.flash * 0.6;
+        gCtx.fillStyle = '#aaccff';
+        gCtx.fillRect(0, 0, W, H);
+      }
+    });
+  }
+
+  gCtx.globalAlpha = 1;
+  gCtx.restore();
+}
+
+function updateFogPosition() {
+  if (!gameState || !gameState.player) return;
+  const overlay = document.getElementById('weather-overlay');
+  if (!overlay) return;
+  const W = window.innerWidth, H = window.innerHeight;
+  const px = gameState.player.x - camera.x;
+  const py = gameState.player.y - camera.y;
+  const pctX = Math.max(0, Math.min(100, (px / W) * 100));
+  const pctY = Math.max(0, Math.min(100, (py / H) * 100));
+  overlay.style.setProperty('--fog-x', pctX + '%');
+  overlay.style.setProperty('--fog-y', pctY + '%');
+}
 
 document.addEventListener('keydown', (e) => {
   const k = e.key.toLowerCase();
@@ -2812,6 +3114,9 @@ function startCountdownThenGame() {
   updateDebuffVisuals();
   resizeGame();
   resetGame(!!coOpMode);
+  // Погода: начинаем с ясно, потом каждые 5 минут меняется
+  weatherParticles = [];
+  applyWeather(WEATHERS[0], false);
   if (typeof updateTrollBalance === 'function') updateTrollBalance();
   let step = 3;
   numEl.textContent = step;
@@ -3191,9 +3496,22 @@ function updateGame(dt, ts) {
     }
   }
 
+  // Смена погоды каждые 5 минут (только хост в коопе, локально в соло)
+  if (ts - weatherLastChangeCheck > 1000) {
+    weatherLastChangeCheck = ts;
+    if (weatherStartTime > 0 && performance.now() - weatherStartTime >= WEATHER_CHANGE_INTERVAL) {
+      if (!gameState.coop || isHost) {
+        pickAndApplyWeather(true);
+      }
+    }
+  }
+
+  updateWeatherParticles(dt);
+
   const hasReverse = hasActiveDebuff('reverse');
   const slugMult = hasActiveDebuff('slug') ? 0.5 : 1.0;
   const slowMult = hasActiveDebuff('bees') ? 0.4 : 1.0;
+  const weatherSpeedMult = currentWeather ? currentWeather.speedMult : 1.0;
 
   let kx = 0, ky = 0;
   if (!isFrozen) {
@@ -3204,7 +3522,7 @@ function updateGame(dt, ts) {
   }
   if (hasReverse) { kx = -kx; ky = -ky; }
   const keyboardActive = kx !== 0 || ky !== 0;
-  const baseMove = 5.2 * (p.moveSpeed || 1.0);
+  const baseMove = 5.2 * (p.moveSpeed || 1.0) * weatherSpeedMult;
 
   if (keyboardActive && !jailed) {
     const len = Math.hypot(kx, ky);
@@ -3255,6 +3573,7 @@ function updateGame(dt, ts) {
   }
 
   updateChop(dt, ts);
+  updateFogPosition();
 
   for (let i = particles.length - 1; i >= 0; i--) {
     const pt = particles[i];
@@ -3414,7 +3733,8 @@ function updateChop(dt, ts) {
       }
       const baseGold = treeType.goldMin + Math.floor(Math.random() * (treeType.goldMax - treeType.goldMin + 1));
       const bonus = (p.goldBonus || 0) + (p.magnet ? 1 : 0);
-      const totalGold = baseGold + bonus;
+      const weatherGold = currentWeather ? currentWeather.goldMult : 1.0;
+      const totalGold = Math.round((baseGold + bonus) * weatherGold);
       playerProfile.gold += totalGold;
       playerProfile.totalGoldEarned += totalGold;
       roundStats.gold += totalGold;
@@ -3460,7 +3780,8 @@ function hostProcessTreeFall(tree, slot) {
     if (gameState.gameTime <= 60000) roundStats.firstMinuteChops++;
     const baseGold = treeType.goldMin + Math.floor(Math.random() * (treeType.goldMax - treeType.goldMin + 1));
     const bonus = (gameState.player.goldBonus || 0) + (gameState.player.magnet ? 1 : 0);
-    gold = baseGold + bonus;
+    const weatherGold = currentWeather ? currentWeather.goldMult : 1.0;
+    gold = Math.round((baseGold + bonus) * weatherGold);
     playerProfile.gold += gold;
     playerProfile.totalGoldEarned += gold;
     roundStats.gold += gold;
@@ -3474,7 +3795,8 @@ function hostProcessTreeFall(tree, slot) {
     discoverTree(treeType.id);
   } else {
     const baseGold = treeType.goldMin + Math.floor(Math.random() * (treeType.goldMax - treeType.goldMin + 1));
-    gold = baseGold;
+    const weatherGold = currentWeather ? currentWeather.goldMult : 1.0;
+    gold = Math.round(baseGold * weatherGold);
   }
   gameState.trees = gameState.trees.filter(tr => tr.id !== tree.id);
   broadcastToAll({ type: 'tree-fall', id: tree.id, x: tree.x, y: tree.y, typeId: tree.typeId, slot, gold });
@@ -3544,9 +3866,9 @@ function renderGame() {
   });
   for (const slotStr in gameState.players) {
     const op = gameState.players[slotStr];
-    if (op) drawPlayer(op, true);
+    if (op) drawPlayer(op, true, false);
   }
-  drawPlayer(gameState.player, false);
+  drawPlayer(gameState.player, false, false);
   particles.forEach(pt => {
     gCtx.globalAlpha = Math.max(0, pt.life);
     gCtx.fillStyle = pt.color;
@@ -3566,7 +3888,29 @@ function renderGame() {
     gCtx.fillText(f.text, f.x, f.y);
   });
   gCtx.globalAlpha = 1;
+  // Ники над игроками при магнитной буре
+  const showAllNicks = currentWeather && currentWeather.showAllNicks;
+  if (showAllNicks && gameState) {
+    for (const slotStr in gameState.players) {
+      const op = gameState.players[slotStr];
+      if (op && op.name) {
+        gCtx.save();
+        gCtx.fillStyle = op.color;
+        gCtx.font = 'bold 12px sans-serif';
+        gCtx.textAlign = 'center';
+        gCtx.strokeStyle = '#000';
+        gCtx.lineWidth = 3;
+        gCtx.strokeText(op.name, op.x, op.y - op.r - 14);
+        gCtx.fillText(op.name, op.x, op.y - op.r - 14);
+        gCtx.restore();
+      }
+    }
+  }
   gCtx.restore();
+
+  // Погодные частицы поверх игрового поля
+  renderWeatherParticles();
+
   const v = gCtx.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H * 0.9);
   v.addColorStop(0, 'transparent');
   v.addColorStop(1, 'rgba(0, 0, 0, 0.55)');
@@ -3633,7 +3977,7 @@ function drawTree(tr) {
   gCtx.restore();
 }
 
-function drawPlayer(p, isPartner) {
+function drawPlayer(p, isPartner, showNick) {
   if (!p) return;
   if (!isFinite(p.x) || !isFinite(p.y)) return;
   gCtx.save();
@@ -3796,6 +4140,8 @@ function showMenu() {
   document.getElementById('debuff-hud').innerHTML = '';
   activeDebuffs = [];
   phantomTrees = [];
+  weatherParticles = [];
+  applyWeather(WEATHERS[0], false);
 }
 
 // ============================================================
@@ -3958,7 +4304,6 @@ document.getElementById('settings-back').addEventListener('click', () => {
   document.getElementById('menu').classList.remove('hidden');
 });
 
-// СЕКРЕТНЕ ПОЛЕ
 document.getElementById('secret-code-input').addEventListener('change', function() {
   const code = this.value.trim().toLowerCase();
   if (!code) return;
@@ -4025,6 +4370,11 @@ document.getElementById('secret-code-input').addEventListener('change', function
     saveNick(newNick);
     showToast(t('nickSaved') + ' → ' + newNick);
     this.value = '';
+  } else if (code === 'weather') {
+    // Секретная команда — случайная погода сразу
+    pickAndApplyWeather(true);
+    showToast('🌦️ ' + (currentWeather ? currentWeather.name : '?'));
+    this.value = '';
   } else {
     this.value = '';
     this.style.borderColor = '#ff4444';
@@ -4053,8 +4403,8 @@ document.getElementById('reset-all-btn').addEventListener('click', () => {
 document.getElementById('about-btn').addEventListener('click', () => {
   playSFX('click');
   const text = currentLang === 'ru'
-    ? '🪓 CHOP BATTLE\n\n🎯 Цель: нарубить больше дерева!\n\n🌳 10 видов деревьев\n\n👥 ДО 5 ИГРОКОВ\n\n🔄 ПЕРЕПОДКЛЮЧЕНИЕ\n\n🐦 КЛЕТКА: решай примеры умножения!\n\n😈 ТРОЛЛЬ-МАГАЗИН: 16 дебаффов\n\n💡 СЕКРЕТНАЯ КОМАНДА: nick (смена ника), gold (золото), troll (дебаффы)'
-    : '🪓 CHOP BATTLE\n\n🎯 Мета: нарубати більше дерева!\n\n🌳 10 видів дерев\n\n👥 ДО 5 ГРАВЦІВ\n\n🔄 ПЕРЕПІДКЛЮЧЕННЯ\n\n🐦 КЛІТКА: розв\'язуй приклади множення!\n\n😈 ТРОЛЬ-МАГАЗИН: 16 дебафів\n\n💡 СЕКРЕТНА КОМАНДА: nick (зміна ніка), gold (золото), troll (дебафи)';
+    ? '🪓 CHOP BATTLE\n\n🎯 Цель: нарубить больше дерева!\n\n🌳 10 видов деревьев\n\n👥 ДО 5 ИГРОКОВ\n\n🌦️ 10 ВИДОВ ПОГОДЫ (меняется каждые 5 минут)\n\n🐦 КЛЕТКА: решай примеры умножения!\n\n😈 ТРОЛЛЬ-МАГАЗИН: 16 дебаффов\n\n💡 СЕКРЕТНЫЕ КОМАНДЫ: nick, gold, troll, weather'
+    : '🪓 CHOP BATTLE\n\n🎯 Мета: нарубати більше дерева!\n\n🌳 10 видів дерев\n\n👥 ДО 5 ГРАВЦІВ\n\n🌦️ 10 ВИДІВ ПОГОДИ (змінюється кожні 5 хвилин)\n\n🐦 КЛІТКА: розв\'язуй приклади множення!\n\n😈 ТРОЛЬ-МАГАЗИН: 16 дебафів\n\n💡 СЕКРЕТНІ КОМАНДИ: nick, gold, troll, weather';
   alert(text);
 });
 
@@ -4426,6 +4776,8 @@ updateControlsVisibility();
 updateShopBalance();
 updateTrollBalance();
 applyLanguage();
+// Начальная погода — ясно
+applyWeather(WEATHERS[0], false);
 
 if (!playerNick) {
   showNickPopup();
@@ -4436,7 +4788,7 @@ if (!playerNick) {
 setInterval(() => {
   if (currentPing > 0) {
     const el = document.getElementById('ping-info');
-    if (el) el.textContent = Math.round(currentPing) + ' мс';
+    if (el) el.textContent = Math.round(currentPing) + ' ms';
   }
 }, 1000);
 
